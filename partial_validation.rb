@@ -27,11 +27,22 @@ module ActiveRecord
               true
             end
           end
+
+          include Helper
         end
 
         def self.partial_validation?
           false
         end
+      end
+    end
+
+    module Helper
+      # We need this since the original version checks for blank which
+      # renders validators like length useless.
+      def attribute_present?(attribute)
+        value = read_attribute(attribute)
+        !value.nil?
       end
     end
   end
